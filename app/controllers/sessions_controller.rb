@@ -8,8 +8,10 @@ class SessionsController < ApplicationController
   
       if user
         session[:user_id] = user.id
+        organization = Organization.find(user.organization_id)
         render json: {
           logged_in: true,
+          organization: organization,
           user: user
         }, status: :ok
       else
@@ -19,8 +21,10 @@ class SessionsController < ApplicationController
   
     def logged_in
       if @current_user
+        organization = Organization.find(@current_user.organization_id)
         render json: {
           logged_in: true,
+          organization: organization,
           user: @current_user
         }
       else
