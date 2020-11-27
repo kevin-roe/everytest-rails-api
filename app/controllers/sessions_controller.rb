@@ -3,17 +3,12 @@ class SessionsController < ApplicationController
   
     def create
       user = User
-              .find_by(email: params["user"]["email"])
-              .try(:authenticate, params["user"]["password"])
+              .find_by(email: params["email"])
+              .try(:authenticate, params["password"])
   
       if user
         session[:user_id] = user.id
-        organization = Organization.find(user.organization_id)
-        render json: {
-          logged_in: true,
-          organization: organization,
-          user: user
-        }, status: :ok
+        render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
       else
         head :unauthorized
       end
@@ -21,21 +16,14 @@ class SessionsController < ApplicationController
   
     def logged_in
       if @current_user
-        organization = Organization.find(@current_user.organization_id)
-        render json: {
-          logged_in: true,
-          organization: organization,
-          user: @current_user
-        }
+        render json: @current_user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :ok
       else
-        render json: {
-          logged_in: false
-        }
+        head :no_content
       end
     end
   
     def logout
       reset_session
-      render json: { logged_in: true }, status: :ok
+      head :no_content
     end
   end

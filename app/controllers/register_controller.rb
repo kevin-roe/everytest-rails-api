@@ -8,28 +8,25 @@ class RegisterController < ApplicationController
 
         # Create Organization
         organization = Organization.create(
-          name: params["organization"]["name"]
+          name: params["organization_name"]
         )
 
         # if organization successfully created, create user
         if organization.valid?
           user = User.create(
             organization_id: organization.id,
-            first_name: params['user']['first_name'],
-            last_name: params['user']['last_name'],
-            email: params['user']['email'],
-            password: params['user']['password'],
-            password_confirmation: params['user']['password_confirmation'],
-            admin: params['user']['admin']
+            first_name: params['first_name'],
+            last_name: params['last_name'],
+            email: params['email'],
+            password: params['password'],
+            password_confirmation: params['password_confirmation'],
+            admin: params['admin']
           )
 
           # if user successfully created, send 201
           if user.valid?
             session[:user_id] = user.id
-            render json: {
-              organization: organization,
-              user: user
-            }, status: :created
+            render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
           
           # if user not created, delete organization and set trans_rolled_back = true
           else          
