@@ -1,8 +1,10 @@
 class Organization < ApplicationRecord
     has_many :users
+    has_many :platforms
+    has_many :products
 
-    validates :name, presence: true
-    validates :name, uniqueness: true
-    validates :name, length: { minimum: 3 }
-    validates :name, length: { maximum: 100 }
+    validates_presence_of :name
+    validates_uniqueness_of :name
+    validates_length_of :name, minimum: 3
+    validates_length_of :name, maximum: 50
 end
