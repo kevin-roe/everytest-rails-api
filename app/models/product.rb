@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
     belongs_to :organization
+    has_many :test_plans
 
     validates_presence_of :name
     validates_uniqueness_of :name, scope: :organization_id

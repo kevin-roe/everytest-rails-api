@@ -1,13 +1,13 @@
 class ProductsController < ApplicationController
     before_action :set_organization
     
-    # GET - /products -- returns all products
+    # GET - /products/:organization_id -- returns all products
     def index
-        products = Product.where(organization_id: @organization.id).select([:id, :name])
+        products = Product.where(organization_id: @organization.id).select([:id, :name]).order(:id)
         render json: products
     end
 
-    # POST - /products -- creates new product
+    # POST - /products/:organization_id -- creates new product
     def create
         product = Product.create(
             organization_id: @organization.id,
@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
         end
     end
 
-    # PUT - /products/:id -- updates one product
+    # PUT - /products/:organization_id/:id -- updates one product
     def update
         product = Product.where(
             id: params["id"], 
@@ -42,7 +42,7 @@ class ProductsController < ApplicationController
         end
     end
 
-    # DELETE - /products/:id -- deletes the product
+    # DELETE - /products/:organization_id/:id -- deletes the product
     def destroy
         product = Product.where(
             id: params["id"], 

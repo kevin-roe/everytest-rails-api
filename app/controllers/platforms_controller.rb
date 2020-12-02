@@ -1,13 +1,13 @@
 class PlatformsController < ApplicationController
     before_action :set_organization
     
-    # GET - /platforms -- returns all platforms
+    # GET - /platforms/:organization_id -- returns all platforms
     def index
-        platforms = Platform.where(organization_id: @organization.id).select([:id, :name])
+        platforms = Platform.where(organization_id: @organization.id).select([:id, :name]).order(:id)
         render json: platforms
     end
 
-    # POST - /platforms -- creates new platform
+    # POST - /platforms/:organization_id -- creates new platform
     def create
         platform = Platform.create(
             organization_id: @organization.id,
@@ -21,7 +21,7 @@ class PlatformsController < ApplicationController
         end
     end
 
-    # PUT - /platforms/:id -- updates one platform
+    # PUT - /platforms/:organization_id/:id -- updates one platform
     def update
         platform = Platform.where(
             id: params["id"], 
@@ -42,7 +42,7 @@ class PlatformsController < ApplicationController
         end
     end
 
-    # DELETE - /platforms/:id -- deletes the platform
+    # DELETE - /platforms/:organization_id/:id -- deletes the platform
     def destroy
         platform = Platform.where(
             id: params["id"], 
