@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get :logged_in, to: "sessions#logged_in"
 
   put 'organizations/:id', to: "organizations#update"
-  resources :products, path: "products/:organization_id", only: [:index, :create, :update, :destroy]
-  resources :platforms, path: "platforms/:organization_id", only: [:index, :create, :update, :destroy]
-  resources :test_plans, path: "testplans/:organization_id", only: [:index, :show, :create, :update, :destroy]
+  resources :products, only: [:index, :create, :update, :destroy]
+  resources :platforms, only: [:index, :create, :update, :destroy]
+  resources :test_plans, only: [:index, :show, :create, :update, :destroy]
 end

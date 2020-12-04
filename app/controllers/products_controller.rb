@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-    before_action :set_organization
+    include CurrentOrganizationConcern
     
     # GET - /products/:organization_id -- returns all products
     def index
@@ -63,16 +63,5 @@ class ProductsController < ApplicationController
 
     def product_params
         params.require(:product).permit(:name)
-    end
-
-    def set_organization
-        organization = Organization.find_by(id: params["organization_id"])
-        if organization == nil
-            render json: {
-                error: "Could not find an organization with the id: " + params["organization_id"]
-            }, status: :bad_request
-        else
-            @organization = organization
-        end
     end
 end

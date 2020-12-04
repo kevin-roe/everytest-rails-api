@@ -1,18 +1,28 @@
 class TestPlansController < ApplicationController
-    before_action :set_organization
+    include CurrentOrganizationConcern
    
-    # GET - /testplans/:organization_id -- returns all products
+    # GET - /test_plans/:organization_id -- returns all products
     def index
-        testplans = TestPlan.where(organization_id: @organization.id).select([:id, :platform_id, :product_id]).order(:id)
-        render json: testplans
+        testplans = TestPlan
+                        .includes([:product, :platform])
+                        .where(organization_id: @organization.id)
+                        .order(:id)
+
+        render_response(testplans)
     end
 
+    # GET - /test_plans/:organization_id/:id -- returns one product
     def show
-        testplan = TestPlan.where(organization_id: @organization.id, id: params["id"]).select([:id, :platform_id, :product_id])[0]
-        render json: testplan
+        testplan = TestPlan
+                        .includes([:product, :platform])
+                        .where(organization_id: @organization.id, id: params["id"])
+                        .order(:id)
+                        .first
+
+        render_response(testplan)
     end
 
-    # POST - /testplans/:organization_id -- creates new product
+    # POST - /test_plans/:organization_id -- creates new product
     def create
         testplan = TestPlan.create(
             organization_id: @organization.id,
@@ -28,7 +38,7 @@ class TestPlansController < ApplicationController
 
     end
 
-    # PUT - /testplans/:organization_id/:id -- updates one product
+    # PUT - /test_plans/:organization_id/:id -- updates one product
     def update
         testplan = TestPlan.where(
             id: params["id"], 
@@ -49,7 +59,7 @@ class TestPlansController < ApplicationController
         end
     end
 
-    # DELETE - /testplans/:organization_id/:id -- deletes the product
+    # DELETE - /test_plans/:organization_id/:id -- deletes the product
     def destroy
         testplan = TestPlan.where(
             id: params["id"], 
@@ -66,18 +76,18 @@ class TestPlansController < ApplicationController
         end
     end
 
-    def test_plan_params
-        params.require(:test_plan).permit(:product_id, :platform_id)
+    private 
+
+    def render_response(obj)
+        render json: obj.as_json(
+            include: { 
+                product: { except: [:created_at, :updated_at, :organization_id]}, 
+                platform: { except: [:created_at, :updated_at, :organization_id]}},
+            except: [:organization_id, :created_at, :updated_at, :platform_id, :product_id]
+        )
     end
 
-    def set_organization
-        organization = Organization.find_by(id: params["organization_id"])
-        if organization == nil
-            render json: {
-                error: "Could not find an organization with the id: " + params["organization_id"]
-            }, status: :bad_request
-        else
-            @organization = organization
-        end
+    def test_plan_params
+        params.require(:test_plan).permit(:product_id, :platform_id)
     end
 end
