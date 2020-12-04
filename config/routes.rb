@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   delete :logout, to: "sessions#logout"
   get :logged_in, to: "sessions#logged_in"
 
-  put 'organizations/:id', to: "organizations#update"
+  put 'organizations', to: "organizations#update"
   resources :products, only: [:index, :create, :update, :destroy]
   resources :platforms, only: [:index, :create, :update, :destroy]
   resources :test_plans, only: [:index, :show, :create, :update, :destroy]
+  resources :test_suites, only: [:index, :show, :create, :update, :destroy]
 end

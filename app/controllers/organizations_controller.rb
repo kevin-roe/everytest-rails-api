@@ -1,12 +1,13 @@
 class OrganizationsController < ApplicationController
-    def update
-        org = Organization.find(params["id"])
-        org.update(org_params)
+    include CurrentOrganizationConcern
 
-        if org.errors.count > 0
-            render json: org.errors, status: :bad_request
+    def update
+        @organization.update(org_params)
+
+        if @organization.errors.count > 0
+            render json: @organization.errors, status: :bad_request
         else
-            render json: org, status: :ok
+            render json: @organization, status: :ok
         end
     end
 
