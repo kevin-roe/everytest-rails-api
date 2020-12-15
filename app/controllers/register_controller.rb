@@ -26,6 +26,7 @@ class RegisterController < ApplicationController
           # if user successfully created, send 201
           if user.valid?
             session[:user_id] = user.id
+            session[:organization_id] = user.organization_id
             render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
           
           # if user not created, delete organization and set trans_rolled_back = true

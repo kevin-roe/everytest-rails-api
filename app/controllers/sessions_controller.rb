@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
   
       if user
         session[:user_id] = user.id
+        session[:organization_id] = user.organization_id
         render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
       else
         head :unauthorized
