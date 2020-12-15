@@ -17,4 +17,6 @@ Rails.application.routes.draw do
   get 'test_plans/:test_plan_id/workflows', to: "workflows#index"
   resources :workflow_steps, only: [:show, :create, :update, :destroy]
   get 'workflows/:workflow_id/workflow_steps', to: "workflow_steps#index"
+
+  get 'heartbeat', to: 'heartbeat#show'
 end
