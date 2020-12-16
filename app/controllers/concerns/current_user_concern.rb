@@ -7,7 +7,8 @@ module CurrentUserConcern
 
   def set_current_user
     puts "############## " + "Session:::"
-    puts session
+    puts session[:user_id]
+    puts session[:organization_id]
     puts "############## "
     if session[:user_id]
       @current_user = User.find(session[:user_id])
