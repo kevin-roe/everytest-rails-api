@@ -9,10 +9,10 @@ class SessionsController < ApplicationController
   
       if user
         puts "############## " + "Creating session"
-        cookies[:user_id] = user.id
-        cookies[:organization_id] = user.organization_id
-        puts cookies[:user_id]
-        puts cookies[:organization_id]
+        session[:user_id] = user.id
+        session[:organization_id] = user.organization_id
+        puts session[:user_id]
+        puts session[:organization_id]
         render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
       else
         puts "############## " + "NOT AUTHORIZED"
@@ -29,8 +29,7 @@ class SessionsController < ApplicationController
     end
   
     def logout
-      cookies.delete :user_id
-      cookies.delete :organization_id
+      reset_session
       head :no_content
     end
   end
