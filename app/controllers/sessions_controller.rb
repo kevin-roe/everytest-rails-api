@@ -11,6 +11,8 @@ class SessionsController < ApplicationController
         puts "############## " + "Creating session"
         session[:user_id] = user.id
         session[:organization_id] = user.organization_id
+        puts session[:user_id]
+        puts session[:organization_id]
         puts "############## " + user.as_json(include: :organization, except: [:organization_id, :password_digest]).to_s
         render json: user.as_json(include: :organization, except: [:organization_id, :password_digest]), status: :created
       else
