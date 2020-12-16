@@ -31,5 +31,7 @@ module EverytestRailsApi
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.api_only = false
   end
 end
