@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get :logged_in, to: "sessions#logged_in"
 
   put 'organizations', to: "organizations#update"
+  resources :users, only: [:index, :show, :create, :update, :destroy]
   resources :products, only: [:index, :create, :update, :destroy]
   resources :platforms, only: [:index, :create, :update, :destroy]
   resources :test_plans, only: [:show, :create, :update, :destroy, :index]
