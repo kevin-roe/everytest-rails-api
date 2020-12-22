@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_162543) do
+ActiveRecord::Schema.define(version: 2020_12_22_132027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,12 +99,12 @@ ActiveRecord::Schema.define(version: 2020_12_15_162543) do
   end
 
   create_table "workflows", force: :cascade do |t|
-    t.bigint "test_plan_id", null: false
+    t.bigint "product_id", null: false
     t.string "name"
+    t.integer "workflow_steps_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "workflow_steps_count", default: 0
-    t.index ["test_plan_id"], name: "index_workflows_on_test_plan_id"
+    t.index ["product_id"], name: "index_workflows_on_product_id"
   end
 
   add_foreign_key "platforms", "organizations"
@@ -117,5 +117,5 @@ ActiveRecord::Schema.define(version: 2020_12_15_162543) do
   add_foreign_key "test_suites", "test_plans"
   add_foreign_key "users", "organizations"
   add_foreign_key "workflow_steps", "workflows"
-  add_foreign_key "workflows", "test_plans"
+  add_foreign_key "workflows", "products"
 end

@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
     include CurrentOrganizationConcern
     include ForeignKeyConstraintConcern
-    before_action :find_product, only: [:update, :destroy]
+    before_action :find_product, only: [:show, :update, :destroy]
     
     # GET - /products/:organization_id -- returns all products
     def index
@@ -11,6 +11,10 @@ class ProductsController < ApplicationController
                         .order(:id)
 
         render json: products
+    end
+
+    def show
+        render json: @product
     end
 
     # POST - /products/:organization_id -- creates new product

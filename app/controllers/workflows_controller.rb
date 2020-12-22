@@ -3,9 +3,9 @@ class WorkflowsController < ApplicationController
     include ForeignKeyConstraintConcern
     before_action :check_organization, except: [:create, :index]
 
-    # GET: test_plans/:test_plan_id/workflows - returns all workflows for a test plan  
+    # GET: products/:product_id/workflows - returns all workflows for a product
     def index
-        workflows = Workflow.where(test_plan_id: params["test_plan_id"]).order(:id)
+        workflows = Workflow.where(product: params["product_id"]).order(:id)
         render json: workflows
     end
 
@@ -45,12 +45,12 @@ class WorkflowsController < ApplicationController
     private
 
     def workflow_params
-        params.require(:workflow).permit(:test_plan_id, :name)
+        params.require(:workflow).permit(:product_id, :name)
     end
 
     def check_organization
         @workflow = Workflow.find(params["id"])
-        if session[:organization_id] != @workflow.test_plan.organization_id
+        if session[:organization_id] != @workflow.product.organization_id
             head :unauthorized
         end
     end
