@@ -1,4 +1,5 @@
 class WorkflowStepsController < ApplicationController
+    include LoggedInConcern
 
     # GET: workflows/:workflow_id/workflow_steps - returns all workflow steps for a workflow  
     def index
@@ -20,9 +21,4 @@ class WorkflowStepsController < ApplicationController
             end
         end
     end
-
-    def workflow_step_params
-        params.require(:workflow_step).permit(:workflow_id, :workflow_step => [:workflow_id, :action, :order, :notes])
-    end
-
 end

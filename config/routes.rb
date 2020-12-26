@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'test_suites/:test_suite_id/test_cases', to: "test_cases#index"
   resources :test_cases, only: [:show, :create, :update, :destroy]
   get 'test_cases/:test_case_id/test_steps', to: "test_steps#index"
+  put 'test_cases/:test_case_id/test_steps', to: "test_steps#update"
 
   resources :workflows, only: [:show, :create, :update, :destroy]
   get 'products/:product_id/workflows', to: "workflows#index"
