@@ -17,8 +17,9 @@ Rails.application.routes.draw do
 
   resources :workflows, only: [:show, :create, :update, :destroy]
   get 'products/:product_id/workflows', to: "workflows#index"
-  resources :workflow_steps, only: [:show, :create, :update, :destroy]
+
   get 'workflows/:workflow_id/workflow_steps', to: "workflow_steps#index"
+  put 'workflows/:workflow_id/workflow_steps', to: "workflow_steps#update"
 
   get 'heartbeat', to: 'heartbeat#show'
 end
