@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_132027) do
+ActiveRecord::Schema.define(version: 2020_12_30_233926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(version: 2020_12_22_132027) do
     t.index ["organization_id"], name: "index_products_on_organization_id"
   end
 
+  create_table "results", force: :cascade do |t|
+    t.string "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "test_cases", force: :cascade do |t|
     t.bigint "test_suite_id", null: false
     t.string "name"
@@ -55,6 +61,26 @@ ActiveRecord::Schema.define(version: 2020_12_22_132027) do
     t.integer "organization_id"
     t.index ["platform_id"], name: "index_test_plans_on_platform_id"
     t.index ["product_id"], name: "index_test_plans_on_product_id"
+  end
+
+  create_table "test_run_steps", force: :cascade do |t|
+    t.integer "test_run_id"
+    t.string "action"
+    t.string "workflow"
+    t.integer "result"
+    t.string "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
+  end
+
+  create_table "test_runs", force: :cascade do |t|
+    t.integer "test_case_id"
+    t.integer "user_id"
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "result"
   end
 
   create_table "test_steps", force: :cascade do |t|

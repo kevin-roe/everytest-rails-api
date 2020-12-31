@@ -3,10 +3,14 @@ class TestCasesController < ApplicationController
     include ForeignKeyConstraintConcern
     before_action :check_organization, except: [:create, :index]
 
-    # GET: test_suites/:test_suite_id/test_cases
+    # GET: test_suites/:test_suite_id/test_cases?with_test_steps=(true|false)
     def index
-        test_cases = TestCase.where(test_suite_id: params["test_suite_id"]).order(:id)
-        render json: test_cases
+        with_test_steps = ActiveModel::Type::Boolean.new.cast(params["with_test_steps"])
+        if with_test_steps
+            render json: TestCase.where(test_suite_id: params["test_suite_id"]).where.not(test_steps_count: 0).order(:id)
+        else
+            render json:  TestCase.where(test_suite_id: params["test_suite_id"]).order(:id)
+        end
     end
 
     # GET: test_cases/:id

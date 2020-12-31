@@ -3,10 +3,14 @@ class TestSuitesController < ApplicationController
     include ForeignKeyConstraintConcern
     before_action :check_organization, except: [:create, :index]
 
-    # GET: test_plans/:test_plan_id/test_suites - returns all test suites for a test plan  
+    # GET: test_plans/:test_plan_id/test_suites?with_test_cases=(true|false)
     def index
-        test_suites = TestSuite.includes(:test_cases).where(test_plan_id: params["test_plan_id"]).order(:id)
-        render json: test_suites
+        with_test_cases = ActiveModel::Type::Boolean.new.cast(params["with_test_cases"])
+        if with_test_cases
+            render json: TestSuite.where(test_plan_id: params["test_plan_id"]).where.not(test_cases_count: 0).order(:id)
+        else
+            render json: TestSuite.where(test_plan_id: params["test_plan_id"]).order(:id)
+        end
     end
 
     # GET: test_suites/:id - shows one test suite and all it's test cases

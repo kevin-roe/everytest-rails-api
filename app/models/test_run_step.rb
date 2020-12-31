@@ -1,0 +1,2 @@
+class TestRunStep < ApplicationRecord
+end

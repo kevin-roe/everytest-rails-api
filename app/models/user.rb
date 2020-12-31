@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   belongs_to :organization
+  has_many :test_runs
 
   validates :first_name, presence: true
   validates :last_name, presence: true

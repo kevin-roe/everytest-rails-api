@@ -22,5 +22,8 @@ Rails.application.routes.draw do
   get 'workflows/:workflow_id/workflow_steps', to: "workflow_steps#index"
   put 'workflows/:workflow_id/workflow_steps', to: "workflow_steps#update"
 
+  get 'test_run/:test_case_id', to: "test_run#show"
+  post 'test_run/:test_case_id', to: "test_run#create"
+
   get 'heartbeat', to: 'heartbeat#show'
 end
