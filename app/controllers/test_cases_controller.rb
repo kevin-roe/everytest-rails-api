@@ -21,11 +21,10 @@ class TestCasesController < ApplicationController
     # POST: test_cases
     def create
         test_case = TestCase.new(test_case_params)
-
         if test_case.save
             render json: test_case
         else
-            head :bad_request
+            render json: test_case.errors.full_messages, status: :bad_request
         end
     end
 
@@ -34,7 +33,7 @@ class TestCasesController < ApplicationController
         if @test_case.update(test_case_params)
             render json: @test_case
         else
-            render json: test_case.errors, status: :bad_request
+            render json: @test_case.errors.full_messages, status: :bad_request
         end
     end
 

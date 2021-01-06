@@ -10,6 +10,8 @@ module ForeignKeyConstraintConcern
           yield
         rescue ActiveRecord::InvalidForeignKey
           head :conflict
+        rescue StandardError
+          head :bad_request
         end
     end
 end

@@ -20,11 +20,11 @@ class TestSuitesController < ApplicationController
 
     # POST: test_suites
     def create
-        test_suite = TestSuite.new(test_suite_params)
-        if test_suite.save!
+        test_suite = TestSuite.create(test_suite_params)
+        if test_suite.valid?
             render json: test_suite
         else
-            head :bad_request
+            render json: test_suite.errors.full_messages, status: :bad_request
         end
     end
 
@@ -33,7 +33,7 @@ class TestSuitesController < ApplicationController
         if @test_suite.update(test_suite_params)
             render json: @test_suite
         else
-            render json: test_suite.errors, status: :bad_request
+            render json: @test_suite.errors.full_messages, status: :bad_request
         end
     end
 

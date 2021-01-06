@@ -20,16 +20,16 @@ class TestPlansController < ApplicationController
 
     # POST - /test_plans -- creates new test_suite
     def create
-        test_plan = TestPlan.new(
+        test_plan = TestPlan.create(
             organization_id: @organization.id,
             product_id: params["product_id"],
             platform_id: params["platform_id"],
         )
 
-        if test_plan.save!
+        if test_plan.valid?
             render_response(test_plan)
         else
-            render json: test_plan.errors, status: :bad_request
+            render json: test_plan.errors.full_messages, status: :bad_request
         end
 
     end
@@ -40,12 +40,12 @@ class TestPlansController < ApplicationController
         if @test_plan.errors.count == 0
             render_response(@test_plan)
         else
-            render json: @test_plan.errors, status: :bad_request
+            render json: @test_plan.errors.full_messages, status: :bad_request
         end
     end
 
     # DELETE - /test_plans/:id -- deletes the test_plan
-    def destroy       
+    def destroy
         @test_plan.destroy
         head :ok
     end

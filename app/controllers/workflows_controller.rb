@@ -17,10 +17,10 @@ class WorkflowsController < ApplicationController
     # POST: workflows
     def create
         workflow = Workflow.new(workflow_params)
-        if workflow.save!
+        if workflow.save
             render json: workflow
         else
-            head :bad_request
+            render json: workflow.errors.full_messages, status: :bad_request
         end
     end
 
@@ -29,7 +29,7 @@ class WorkflowsController < ApplicationController
         if @workflow.update(workflow_params)
             render json: @workflow
         else
-            render json: workflow.errors, status: :bad_request
+            render json: @workflow.errors.full_messages, status: :bad_request
         end
     end
 
